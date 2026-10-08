@@ -27,11 +27,11 @@ export TOKENIZERS_PARALLELISM=false
 export TRANSFORMERS_VERBOSITY=warning
 
 # Evaluation knobs — override on the command line if you like:
-#   sbatch submit_eval.sh outputs/gemma3-12b-chartqa-qlora test 1000
+#   sbatch scripts/submit_eval.sh outputs/gemma3-12b-chartqa-qlora test 1000
 # The base model is NOT taken from MODEL_ID here — src.compare reads it from the
 # adapter's adapter_config.json, so it always matches the adapter you point at.
 #   4B  adapter: outputs/gemma3-4b-chartqa-qlora
-#   12B adapter: outputs/gemma3-12b-chartqa-qlora  (matches OUTPUT_DIR in submit.sh)
+#   12B adapter: outputs/gemma3-12b-chartqa-qlora  (matches OUTPUT_DIR in scripts/submit.sh)
 ADAPTER_DIR=${1:-outputs/gemma3-12b-chartqa-qlora}
 SPLIT=${2:-test}
 NUM_SAMPLES=${3:-500}

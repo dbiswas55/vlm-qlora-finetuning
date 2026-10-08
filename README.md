@@ -22,7 +22,7 @@ A minimal, single-day fine-tuning setup that covers four things in one go:
 | Gemma 3 4B | 43.6% | 61.6% |
 | Gemma 3 12B | 61.8% | 69.4% |
 
-ChartQA test, 500-question subset, relaxed accuracy. The fine-tuned 4B model matches the base 12B model, three times its size.
+ChartQA test on 500-question subset.
 
 ## Repository layout
 
@@ -32,10 +32,11 @@ vlm-qlora-finetuning/
 ├── requirements.txt
 ├── .gitignore
 ├── .env.example                 # copy to .env, add HF_TOKEN / WANDB_API_KEY
-├── submit.sh                    # SLURM entrypoint (smoke test + training)
-├── submit_eval.sh               # SLURM entrypoint (base vs. fine-tuned eval)
 ├── config/
 │   └── accelerate_ddp.yaml      # Multi-GPU DDP config
+├── scripts/
+│   ├── submit.sh                # SLURM entrypoint (smoke test + training)
+│   └── submit_eval.sh           # SLURM entrypoint (base vs. fine-tuned eval)
 ├── outputs/                     # gitignored, training writes here
 ├── tests/
 │   └── investigate_chartqa.py   # dataset inspection + sample visualization
@@ -123,10 +124,11 @@ accelerate launch --config_file config/accelerate_ddp.yaml \
     -m src.train
 ```
 
-On a SLURM cluster:
+On a SLURM cluster (from the repo root, so `logs/` lands there):
 
 ```bash
-sbatch submit.sh
+mkdir -p logs
+sbatch scripts/submit.sh
 ```
 
 The LoRA adapter is written to `outputs/gemma3-4b-chartqa-qlora/`.
