@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J vlm-forge
-#SBATCH -o logs/vlm-forge.o%j
-#SBATCH -e logs/vlm-forge.e%j
+#SBATCH -J vlm-qlora-finetuning
+#SBATCH -o logs/vlm-qlora-finetuning.o%j
+#SBATCH -e logs/vlm-qlora-finetuning.e%j
 #SBATCH --mail-user=dipayan1109033@gmail.com
 #SBATCH --mail-type=FAIL,END
 #SBATCH -t 18:00:00
@@ -9,7 +9,7 @@
 #SBATCH --mem=64GB
 #SBATCH --gpus-per-node=ada:1            # change to ada:4 for multi-GPU
  
-cd /project/subhlok/dipayan/vlm-forge
+cd /project/subhlok/dipayan/vlm-qlora-finetuning
 source /project/subhlok/dipayan/my_envs/venv312/bin/activate
 
 # flash-attn skipped: cluster compute nodes have no nvcc (CUDA compiler).
@@ -28,7 +28,7 @@ fi
 export HF_HOME="/project/subhlok/dipayan/hf_cache"
 export TOKENIZERS_PARALLELISM=false
 export TRANSFORMERS_VERBOSITY=warning
-export WANDB_PROJECT="vlm-forge"
+export WANDB_PROJECT="vlm-qlora-finetuning"
 
 # ---- Run configuration ----------------------------------------------------
 # Swap models here. train.py reads these env vars (defaults reproduce the 4B

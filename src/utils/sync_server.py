@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-sync_carya.py
+sync_server.py
 
 Minimal rsync wrapper with hardcoded (easy-to-edit) settings.
 
@@ -9,7 +9,7 @@ Default behavior (when you run this file):
   - Uses update mode (-u)
 
 How to use:
-  python sync_carya.py
+  python -m src.utils.sync_server
 
 To change behavior:
   - Edit MODE to "pull", "push", or "delete"
@@ -42,21 +42,21 @@ PUSH_SYNC_PAIRS: list[PathPair] = [
 
 PULL_SYNC_PAIRS: list[PathPair] = [
     (
-        "/Volumes/Works/LearningHub/vlm-forge/wandb",
-        "/project/subhlok/dipayan/vlm-forge/wandb",
+        "/Volumes/Works/LearningHub/vlm-qlora-finetuning/wandb",
+        "/project/subhlok/dipayan/vlm-qlora-finetuning/wandb",
     ),
     (
-        "/Volumes/Works/LearningHub/vlm-forge/outputs",
-        "/project/subhlok/dipayan/vlm-forge/outputs",
+        "/Volumes/Works/LearningHub/vlm-qlora-finetuning/outputs",
+        "/project/subhlok/dipayan/vlm-qlora-finetuning/outputs",
     ),
 ]
 
 # Pairs used for delete-sync (local -> server with --delete).
-# Mirrors PUSH_SYNC_PAIRS by default; narrow this down if needed.
+# Defaults to the wandb pull pair; narrow this down if needed.
 DELETE_SYNC_PAIRS: list[PathPair] = [
     (
-        "/Volumes/Works/LearningHub/vlm-forge/wandb",
-        "/project/subhlok/dipayan/vlm-forge/wandb",
+        "/Volumes/Works/LearningHub/vlm-qlora-finetuning/wandb",
+        "/project/subhlok/dipayan/vlm-qlora-finetuning/wandb",
     ),
 ]
 

@@ -1,9 +1,6 @@
-# vlm-forge
+# vlm-qlora-finetuning
 
-QLoRA fine-tuning of vision-language models. Default config trains
-`google/gemma-3-4b-it` on `HuggingFaceM4/ChartQA` using HuggingFace TRL, PEFT,
-and bitsandbytes. Single- and multi-GPU launchers, plus test/train/eval/predict
-scripts. Built for L40S clusters.
+QLoRA fine-tuning of vision-language models for chart question answering. Fine-tunes Gemma 3 (4B and 12B) on ChartQA with Hugging Face TRL, PEFT, and bitsandbytes, on one or more GPUs (Slurm-ready, built for L40S).
 
 ## What this is
 
@@ -18,27 +15,42 @@ A minimal, single-day fine-tuning setup that covers four things in one go:
   `accelerate launch`. No FSDP / DeepSpeed required because QLoRA's per-GPU
   footprint is small.
 
+## Results
+
+| Model | Base | Fine-tuned (QLoRA) |
+|---|---|---|
+| Gemma 3 4B | 43.6% | 61.6% |
+| Gemma 3 12B | 61.8% | 69.4% |
+
+ChartQA test, 500-question subset, relaxed accuracy. The fine-tuned 4B model matches the base 12B model, three times its size.
+
 ## Repository layout
 
 ```
-vlm-forge/
+vlm-qlora-finetuning/
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
-├── submit.sh                    # SLURM entrypoint
+├── .env.example                 # copy to .env, add HF_TOKEN / WANDB_API_KEY
+├── submit.sh                    # SLURM entrypoint (smoke test + training)
+├── submit_eval.sh               # SLURM entrypoint (base vs. fine-tuned eval)
 ├── config/
 │   └── accelerate_ddp.yaml      # Multi-GPU DDP config
 ├── outputs/                     # gitignored, training writes here
+├── tests/
+│   └── investigate_chartqa.py   # dataset inspection + sample visualization
 └── src/
     ├── __init__.py
     ├── test.py                  # smoke test (~2 min)
     ├── train.py                 # main training loop
     ├── evaluate.py              # relaxed accuracy on the test split
+    ├── compare.py               # base vs. fine-tuned report
     ├── predict.py               # single-image CLI
     └── utils/
         ├── __init__.py          # re-exports for clean imports
         ├── model.py             # MODEL_ID, model + processor loading
-        └── data.py              # SYSTEM_PROMPT, message formatting, collator
+        ├── data.py              # SYSTEM_PROMPT, message formatting, collator
+        └── sync_server.py       # rsync helper for the cluster
 ```
 
 All scripts run as modules from the repo root: `python -m src.train`,

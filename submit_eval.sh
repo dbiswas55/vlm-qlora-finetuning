@@ -9,7 +9,7 @@
 #SBATCH --mem=16GB
 #SBATCH --gpus-per-node=ada:1
 
-cd /project/subhlok/dipayan/vlm-forge
+cd /project/subhlok/dipayan/vlm-qlora-finetuning
 source /project/subhlok/dipayan/my_envs/venv312/bin/activate
 
 mkdir -p logs
